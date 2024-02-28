@@ -9,6 +9,10 @@ This project helps you quickly generate a responsive resume page, also easy to e
 ```shell
 yarn && yarn dev
 ```
+
+## Edit
+Edit `/src/data.js` in editor such as VS Code.
+
 ## Build
 
 ```shell
