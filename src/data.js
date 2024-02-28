@@ -2,7 +2,7 @@ export const resumeData = {
   zh: {
     language: "中文",
     name: "吴岷士",
-    avatarUrl: "/avatar.jpg",
+    avatarUrl: "./avatar.jpg",
     avatarLink: "https://vue-color-avatar.vercel.app/",
     currentStatus: "正在看机会",
     expectedJob: "高级前端开发工程师",
@@ -121,7 +121,7 @@ export const resumeData = {
   en: {
     language: "English",
     name: "John Doe",
-    avatarUrl: "/avatar.jpg",
+    avatarUrl: "./avatar.jpg",
     avatarLink: "https://vue-color-avatar.vercel.app/",
     currentStatus: "Open to Work",
     expectedJob: "Senior Front-end Developer",
