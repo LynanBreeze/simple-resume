@@ -1,0 +1,32 @@
+{
+  "zh": {
+    "expectedJob": "期望职位",
+    "phone": "电话",
+    "email": "邮箱",
+    "currentCity": "当前城市",
+    "expectedCity": "期望工作城市",
+    "workedCompanies": "工作经历",
+    "projects": "项目经历",
+    "education": "教育经历",
+    "certificates": "证书",
+    "languages": "工作语言",
+    "selefAssessment": "总结",
+    "links": "其他链接",
+    "print": "打印"
+  },
+  "en": {
+    "expectedJob": "Expected Job",
+    "phone": "Phone",
+    "email": "Email",
+    "currentCity": "Current City",
+    "expectedCity": "Expected City",
+    "workedCompanies": "Work Experience",
+    "projects": "Projects",
+    "education": "Education",
+    "certificates": "Certificates",
+    "languages": "Languages",
+    "selefAssessment": "Summary",
+    "links": "Links",
+    "print": "Print"
+  }
+}
