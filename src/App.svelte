@@ -1,12 +1,21 @@
 <script>
-  import qs from "query-string";
   import rawTranslations from "./translations.json";
   import { resumeData, linksMap } from "./data";
   import { tick, onMount } from "svelte";
 
+  const parseQuery = (searchString)=>{
+    const searchItems = searchString.slice(1).split("&");
+    const query = {};
+    searchItems.forEach((item)=>{
+      const [key, value] = item.split("=");
+      query[key] = value;
+    });
+    return query;
+  }
+
   let print = false;
   const languages = Object.keys(resumeData);
-  const queryLocale = qs.parse(location.search).locale || "";
+  const queryLocale = parseQuery(location.search).locale || "";
   let locale = languages.includes(queryLocale)
     ? queryLocale
     : languages.indexOf("en")
