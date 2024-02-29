@@ -4,6 +4,11 @@ This project helps you quickly generate a responsive resume page, also easy to e
 
 ![](https://i.imgur.com/G8PwnZY.jpeg)
 
+## Features
+1. Multi-language display/switch
+2. Small and fast
+3. Print as PDF
+
 ## Run 
 
 ```shell
