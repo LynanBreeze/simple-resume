@@ -272,16 +272,18 @@
         </div>
       {/if}
 
-      <div class="section languages">
-        <div class="section-title">
-          <span>{translations.languages}</span>
-        </div>
-        {#each data.languages.items as language}
-          <div class="list-item">
-            <div class="item-content">{language}</div>
+      {#if data.languages && data.languages.items.length}
+        <div class="section languages">
+          <div class="section-title">
+            <span>{translations.languages}</span>
           </div>
-        {/each}
-      </div>
+          {#each data.languages.items as language}
+            <div class="list-item">
+              <div class="item-content">{language}</div>
+            </div>
+          {/each}
+        </div>
+      {/if}
 
       <div class="section">
         <div class="section-title">
