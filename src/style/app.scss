@@ -335,10 +335,11 @@ $button-hover-color: #f6f5f5;
           margin: 0.15rem 0 0.1rem 0;
           &::after {
             content: "";
+            position: relative;
+            top: 2.5px;
             flex: 1 1 auto;
-            height: 1px;
+            border-bottom: 1px solid $divide-line-color;
             margin-left: 0.2rem;
-            background-color: $divide-line-color;
           }
         }
         .title {
