@@ -339,6 +339,7 @@ $button-hover-color: #f6f5f5;
             height: 1px;
             margin-left: 0.2rem;
             background-color: $divide-line-color;
+            @include min-device-pixel-ratio(scaleY(0.5), scaleY(0.33));
           }
         }
         .title {
@@ -461,6 +462,13 @@ $button-hover-color: #f6f5f5;
             padding-top: 0;
           }
         }
+      }
+    }
+    // This helps to put the divide line in the visual center (English only)
+    .section-title {
+      &::after {
+        position: relative;
+        top: 0.018rem;
       }
     }
   }
