@@ -26,6 +26,7 @@
   $: translations = rawTranslations[locale];
   $: if (locale) {
     document.title = `${data.expectedJob}-${data.name}`;
+    document.documentElement.setAttribute('lang', locale);
   }
 
   const switchLocale = (targetLocale) => {
@@ -34,6 +35,7 @@
       const newUrl = new URL(location.href);
       newUrl.search = `?locale=${targetLocale}`;
       window.history.replaceState({}, null, newUrl.href);
+      document.documentElement.setAttribute('lang', targetLocale);
     }
   };
 
