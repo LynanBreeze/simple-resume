@@ -1,3 +1,4 @@
+/// <reference path="./vite-env.d.ts" />
 import "./style/global.css";
 import "./style/app.scss";
 import App from "./App.svelte";

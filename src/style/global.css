@@ -1,3 +1,4 @@
+/* 确保 rem 基准生效，避免内容因 rem 未生效而变得极小导致“白屏” */
 html {
   font-size: 100px;
   -webkit-text-size-adjust: none;

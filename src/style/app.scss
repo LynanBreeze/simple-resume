@@ -167,7 +167,9 @@ $button-hover-color: #f6f5f5;
 .content-wrapper {
   width: 100%;
   .content {
-    font-size: 0.14rem;
+    /* 保底最小字号与文字颜色，确保简历内容始终可见 */
+    font-size: max(14px, 0.14rem);
+    color: #232323;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     background-color: #fff;
     border-radius: 0.02rem;
@@ -357,6 +359,9 @@ $button-hover-color: #f6f5f5;
           }
         }
         .education-item {
+          .education-achievements {
+            margin-top: 0.08rem;
+          }
           @media only screen and (max-width: 378px) {
             .title-date {
               flex-wrap: wrap;

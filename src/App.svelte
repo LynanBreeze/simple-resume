@@ -18,13 +18,11 @@
   const queryLocale = parseQuery(location.search).locale || "";
   let locale = languages.includes(queryLocale)
     ? queryLocale
-    : languages.indexOf("en")
-      ? "en"
-      : languages[0];
+    : (languages.includes("en") ? "en" : languages[0]);
 
-  $: data = resumeData[locale];
-  $: translations = rawTranslations[locale];
-  $: if (locale) {
+  $: data = resumeData[locale] || resumeData[languages[0]];
+  $: translations = rawTranslations[locale] || rawTranslations[languages[0]];
+  $: if (data) {
     document.title = `${data.expectedJob}-${data.name}`;
     document.documentElement.setAttribute('lang', locale);
   }
@@ -141,6 +139,42 @@
     <div class="body">
       <div class="section">
         <div class="section-title">
+          <span>{translations.education}</span>
+        </div>
+        <div>
+          {#each data.education as education}
+            <div class={`education-item ${locale}`}>
+              <div class="title-date">
+                <div class="left">
+                  <div class="ex-title">{education.name}</div>
+                  <div class="ex-subtitle">{education.degree}</div>
+                </div>
+                <div class="date-range">
+                  <span class="range">{education.dateRange}</span>
+                  {#if education.duration}
+                    <br /><span class="years">{education.duration}</span>
+                  {/if}
+                </div>
+              </div>
+              <div class="subtitle">
+                {education.major}
+              </div>
+              {#if education.Achievements && education.Achievements.length}
+                <div class="education-achievements content-text">
+                  {#each education.Achievements as achievement}
+                    <div class="list-item">
+                      <div class="item-content">{achievement}</div>
+                    </div>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">
           <span>{translations.workedCompanies}</span>
         </div>
         <div>
@@ -189,6 +223,15 @@
                     {#if project.description}
                       <div class="description">{project.description}</div>
                     {/if}
+                    {#if project.Description && project.Description.length}
+                      <div class="description content-text">
+                        {#each project.Description as desc}
+                          <div class="list-item">
+                            <div class="item-content">{desc}</div>
+                          </div>
+                        {/each}
+                      </div>
+                    {/if}
                     <div class="duties content-text">
                       {#each project.duties as duty, index}
                         <div class="list-item">
@@ -209,6 +252,41 @@
         </div>
       </div>
 
+      {#if data.Research && data.Research.length}
+        <div class="section research">
+          <div class="section-title">
+            <span>{translations.research}</span>
+          </div>
+          {#each data.Research as research}
+            <div class="research-item">
+              <div class="title-date">
+                <div class="left">
+                  <div class="ex-title">{research.name}</div>
+                  {#if research.description}
+                    <div class="ex-subtitle">{research.description}</div>
+                  {/if}
+                </div>
+                <div class="date-range">
+                  <span class="range">{research.dateRange}</span>
+                </div>
+              </div>
+              {#if research.duties && research.duties.length}
+                <div class="duties content-text">
+                  {#each research.duties as duty, index}
+                    <div class="list-item">
+                      <div class="item-content">
+                        <span class="item-index">{@html `${index + 1}.`}</span>
+                        <span>{@html formatContentLink(duty)}</span>
+                      </div>
+                    </div>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      {/if}
+
       {#if data.projects && data.projects.length}
         <div class="section">
           <div class="section-title">{translations.projects}</div>
@@ -220,6 +298,15 @@
                 </div>
                 {#if project.description}
                   <div class="description">{project.description}</div>
+                {/if}
+                {#if project.Description && project.Description.length}
+                  <div class="description content-text">
+                    {#each project.Description as desc}
+                      <div class="list-item">
+                        <div class="item-content">{desc}</div>
+                      </div>
+                    {/each}
+                  </div>
                 {/if}
                 <div class="duties">
                   {#each project.duties as duty, index}
@@ -237,31 +324,7 @@
         </div>
       {/if}
 
-      <div class="section">
-        <div class="section-title">
-          <span>{translations.education}</span>
-        </div>
-        <div>
-          {#each data.education as education}
-            <div class={`education-item ${locale}`}>
-              <div class="title-date">
-                <div class="left">
-                  <div class="ex-title">{education.name}</div>
-                  <div class="ex-subtitle">{education.degree}</div>
-                </div>
-                <div class="date-range">
-                  <span class="range">{education.dateRange}</span>
-                </div>
-              </div>
-              <div class="subtitle">
-                {education.major}
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-
-      {#if data.certificates.items.length}
+      {#if data.certificates && data.certificates.items.length}
         <div class="section certificates">
           <div class="section-title">
             <span>{translations.certificates}</span>
@@ -291,6 +354,7 @@
         <div class="section-title">
           <span>{translations.links}</span>
         </div>
+        {#if data.links && data.links.items}
         {#each data.links.items as link}
           <div class="list-item">
             <div class="item-content">
@@ -304,6 +368,7 @@
             </div>
           </div>
         {/each}
+        {/if}
       </div>
     </div>
 
