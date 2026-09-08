@@ -12,7 +12,9 @@
     "languages": "工作语言",
     "selefAssessment": "总结",
     "links": "其他链接",
-    "print": "打印"
+    "tags": "标签",
+    "print": "打印",
+    "exportMd": "导出为 Markdown"
   },
   "en": {
     "expectedJob": "Expected Job",
@@ -27,6 +29,8 @@
     "languages": "Languages",
     "selefAssessment": "Summary",
     "links": "Links",
-    "print": "Print"
+    "tags": "Tags",
+    "print": "Print",
+    "exportMd": "Export as Markdown"
   }
 }

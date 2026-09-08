@@ -45,6 +45,148 @@
     window.print();
   };
 
+  const htmlToMarkdown = (html) => {
+    const documentFragment = new DOMParser().parseFromString(html, "text/html");
+
+    const convertLinks = (text) => {
+      let result = text;
+      Object.keys(linksMap).forEach((key) => {
+        const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        result = result.replace(
+          new RegExp(escapedKey, "g"),
+          `[${key}](${linksMap[key]})`
+        );
+      });
+      return result;
+    };
+
+    const convertNode = (node, insideLink = false) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent || "";
+        return insideLink ? text : convertLinks(text);
+      }
+
+      if (node.nodeType !== Node.ELEMENT_NODE) {
+        return "";
+      }
+
+      const element = node;
+      const isLink = insideLink || element.tagName.toLowerCase() === "a";
+      const content = Array.from(element.childNodes)
+        .map((child) => convertNode(child, isLink))
+        .join("");
+
+      switch (element.tagName.toLowerCase()) {
+        case "a":
+          return `[${content}](${element.getAttribute("href") || ""})`;
+        case "b":
+        case "strong":
+          return `**${content}**`;
+        case "i":
+        case "em":
+          return `*${content}*`;
+        case "br":
+          return "\n";
+        default:
+          return content;
+      }
+    };
+
+    return Array.from(documentFragment.body.childNodes)
+      .map((node) => convertNode(node))
+      .join("");
+  };
+
+  const markdownContent = (content) => {
+    return htmlToMarkdown(content || "");
+  };
+
+  const markdownList = (items = []) =>
+    items.map((item) => `- ${markdownContent(item)}`).join("\n");
+
+  const resumeToMarkdown = () => {
+    const lines = [
+      `# ${data.name}`,
+      "",
+      `**${data.expectedJob}** · ${data.yearsOfExperience}`,
+      "",
+      `📍 ${data.currentCity}${data.currentStatus ? ` · ${data.currentStatus}` : ""}`,
+      "",
+      `- ${translations.phone}: ${data.phoneNumber.replace("****", data.magicCode)}`,
+      `- ${translations.email}: [${data.email}](mailto:${data.email})`,
+    ];
+
+    if (data.introduction) {
+      lines.push("", markdownContent(data.introduction));
+    }
+
+    if (data.skillTags?.length) {
+      lines.push("", data.skillTags.map((tag) => `\`${tag}\``).join(" · "));
+    }
+
+    lines.push("", `## ${translations.workedCompanies}`);
+    data.workedCompanies.forEach((company) => {
+      const companyName = company.link
+        ? `[${markdownContent(company.name)}](${company.link})`
+        : markdownContent(company.name);
+      lines.push(
+        "",
+        `### ${companyName}${company.jobTitle ? ` — ${markdownContent(company.jobTitle)}` : ""}`,
+        `${company.dateRange}${company.dateRangeYears ? ` · ${company.dateRangeYears}` : ""}`
+      );
+      if (company.type) lines.push(`_${markdownContent(company.type)}_`);
+      if (company.tags?.length) lines.push(`${translations.tags}: ${company.tags.map((tag) => `\`${tag}\``).join(" · ")}`);
+      company.projects.forEach((project) => {
+        if (project.description) lines.push("", `**${markdownContent(project.description)}**`);
+        if (project.duties?.length) lines.push("", markdownList(project.duties));
+      });
+    });
+
+    if (data.projects?.length) {
+      lines.push("", `## ${translations.projects}`);
+      data.projects.forEach((project) => {
+        lines.push("", `### ${markdownContent(project.title)}`);
+        if (project.description) lines.push("", markdownContent(project.description));
+        if (project.duties?.length) lines.push("", markdownList(project.duties));
+      });
+    }
+
+    lines.push("", `## ${translations.education}`);
+    data.education.forEach((education) => {
+      lines.push(
+        "",
+        `### ${markdownContent(education.name)} — ${markdownContent(education.degree)}`,
+        `${education.dateRange}${education.major ? ` · ${markdownContent(education.major)}` : ""}`
+      );
+    });
+
+    if (data.certificates?.items?.length) {
+      lines.push("", `## ${translations.certificates}`, "", markdownList(data.certificates.items));
+    }
+    if (data.languages?.items?.length) {
+      lines.push("", `## ${translations.languages}`, "", markdownList(data.languages.items));
+    }
+
+    lines.push("", `## ${translations.links}`, "", data.links.items
+      .map((link) => `- [${markdownContent(link.title)}](${link.href})`)
+      .join("\n"));
+
+    return `${lines.join("\n").replace(/\n{3,}/g, "\n\n").trim()}\n`;
+  };
+
+  const exportMarkdown = () => {
+    const safeName = (data.name || "resume").replace(/[\\/:*?"<>|]+/g, "-").trim();
+    const blob = new Blob([resumeToMarkdown()], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${safeName}-${locale}.md`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   onMount(() => {
     addEventListener("beforeprint", (event) => {
       print = true;
@@ -133,9 +275,13 @@
           {/if}
         {/each}
       </div>
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <div class="print-btn no-print" on:click={printPage}>
-        {translations.print}
+      <div class="header-actions no-print">
+        <button class="action-btn" type="button" on:click={printPage}>
+          {translations.print}
+        </button>
+        <button class="action-btn" type="button" on:click={exportMarkdown}>
+          {translations.exportMd}
+        </button>
       </div>
     </div>
     <div class="body">

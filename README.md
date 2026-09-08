@@ -1,6 +1,6 @@
 # Simple Resume
 
-This project helps you quickly generate a responsive resume page, also easy to export it as PDF.
+This project helps you quickly generate a responsive resume page, also easy to export it as PDF or Markdown.
 
 ![](https://i.imgur.com/G8PwnZY.jpeg)
 
@@ -9,6 +9,7 @@ This project helps you quickly generate a responsive resume page, also easy to e
 2. Multi-language display/switch
 3. Small (13+KB gziped) and fast
 4. Print as PDF
+5. Export as Markdown
 
 ## Run 
 

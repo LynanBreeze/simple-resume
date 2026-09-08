@@ -289,21 +289,27 @@ $button-hover-color: #f6f5f5;
           @include hover;
         }
       }
-      .print-btn {
+      .header-actions {
         position: absolute;
         top: 0.24rem;
         right: 0;
-        user-select: none;
-        text-decoration: underline;
-        color: $link-color;
-        cursor: pointer;
         display: none;
-        box-sizing: border-box;
-        padding: 0 4px;
+        gap: 0.08rem;
         @media only screen and (min-width: 960px) {
-          display: block;
+          display: flex;
         }
-        @include hover;
+        .action-btn {
+          border: 0;
+          background: transparent;
+          box-sizing: border-box;
+          color: $link-color;
+          cursor: pointer;
+          font: inherit;
+          padding: 0 4px;
+          text-decoration: underline;
+          user-select: none;
+          @include hover;
+        }
       }
       .switch-locale {
         span {
